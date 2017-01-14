@@ -15,8 +15,10 @@ UNSUPPORTED_VCODECS=('MPEG-4 Visual' 'xvid' 'MPEG Video', 'HEVC')
 SUPPORTED_ACODECS=('AAC' 'MPEG Audio' 'Vorbis' 'Ogg' 'Opus')
 UNSUPPORTED_ACODECS=('AC-3' 'DTS' 'PCM')
 
-DEFAULT_VCODEC=h264
-DEFAULT_ACODEC=libvorbis
+# DEFAULT_VCODEC=h264
+DEFAULT_VCODEC=;libx264
+# DEFAULT_ACODEC=libvorbis
+DEFAULT_ACODEC=aac
 DEFAULT_GFORMAT=mkv
 
 #############
@@ -163,7 +165,13 @@ process_file() {
 		if [ "$OUTPUT_GFORMAT" = "ok" ]; then
 			OUTPUT_GFORMAT=$EXTENSION
 		fi
-		$FFMPEG -loglevel error -stats -i "$FILENAME" -map 0 -scodec copy -vcodec "$OUTPUT_VCODEC" -acodec "$OUTPUT_ACODEC" "$FILENAME.$OUTPUT_GFORMAT" && on_success "$FILENAME" || on_failure "$FILENAME"
+		# $FFMPEG -loglevel error -stats -i "$FILENAME" -map 0 -scodec copy -vcodec "$OUTPUT_VCODEC" -acodec "$OUTPUT_ACODEC" "$FILENAME.$OUTPUT_GFORMAT" && on_success "$FILENAME" || on_failure "$FILENAME"
+		$FFMPEG -loglevel error -stats -i "$FILENAME" 
+		-map 0 -scodec copy 
+		-vcodec "$OUTPUT_VCODEC" 
+		-acodec "$OUTPUT_ACODEC" "$FILENAME.$OUTPUT_GFORMAT" 
+		&& on_success "$FILENAME" || on_failure "$FILENAME"
+
 		echo ""
 	fi
 }
